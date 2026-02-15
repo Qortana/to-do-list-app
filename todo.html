@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Tasks</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="todo-container">
+
+        <!-- 👤 USER PROFILE CARD -->
+            <div class="profile-card">
+                <div class="avatar">👤</div>
+                    <Span>P</span>
+                    <div class="notificatiom-badge" id="notifCount">3</div>
+                </div>
+
+                <div class="profile-info">
+                    <h3 id="greeting">Good day</h3>
+                    <p>Panashe</p>
+                </div>
+                    
+                <button class="dark-toggle" onclick="toggleeDarkMode()">🌙</button>
+            </div>
+
+        <!-- 🔹 LEFT: CONTROL CARD -->
+        <div class="control-card">
+            <h2>My To-Do List</h2>
+
+            <div class="add-task">
+                <input type="text" id="newTask" placeholder="Add new task..." />
+                <input type="text" id="description" placeholder="Task description">
+                <input type="text" id="city" placeholder="City (e.g. London)"/>
+                <input type="date" id="dueDate">
+
+                <button onclick="addTask()">Add Task</button>
+            </div>
+
+            <div class="filters">
+                <button onclick="setFilter('all')">All</button>
+                <button onclick="setFilter('active')">Active</button>
+                <button onclick="setFilter('completed')">Completed</button>
+                <button onclick="setFilter('overdue')">Overdue</button>
+            </div>
+        </div>
+
+        <!-- 🔹 RIGHT: TASKS GRID -->
+        <div class="tasks-card">
+            <ul id="taskList"></ul>
+        </div>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
