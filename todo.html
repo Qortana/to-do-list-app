@@ -8,50 +8,60 @@
 
 <body>
     <div class="todo-container">
+         <!-- PROFILE CARD (FULL WIDTH) -->
+       <div class="profile-card">
 
-        <!-- 👤 USER PROFILE CARD -->
-            <div class="profile-card">
-                <div class="avatar">👤</div>
-                    <Span>P</span>
-                    <div class="notificatiom-badge" id="notifCount">3</div>
+            <div class="profile-left">
+                <div class="avatar">
+                    👤
+                    <div class="notification-badge" id="notifCount">0</div>
                 </div>
 
                 <div class="profile-info">
-                    <h3 id="greeting">Good day</h3>
-                    <p>Panashe</p>
+                    <h3 id="greeting">Good day, Panashe 👋</h3>
+                    <p>Stay productive today!</p>
                 </div>
-                    
-                <button class="dark-toggle" onclick="toggleeDarkMode()">🌙</button>
             </div>
 
-        <!-- 🔹 LEFT: CONTROL CARD -->
-        <div class="control-card">
-            <h2>My To-Do List</h2>
+            <div class="profile-actions">
+                <button id="darkToggle">🌙</button>
 
-            <div class="add-task">
-                <input type="text" id="newTask" placeholder="Add new task..." />
-                <input type="text" id="description" placeholder="Task description">
-                <input type="text" id="city" placeholder="City (e.g. London)"/>
-                <input type="date" id="dueDate">
-
-                <button onclick="addTask()">Add Task</button>
+                <select id="themeSelector">
+                    <option value="default">Purple</option>
+                    <option value="blue">Blue</option>
+                    <option value="green">Green</option>
+                    <option value="orange">Orange</option>
+                </select>
             </div>
 
-            <div class="filters">
-                <button onclick="setFilter('all')">All</button>
-                <button onclick="setFilter('active')">Active</button>
-                <button onclick="setFilter('completed')">Completed</button>
-                <button onclick="setFilter('overdue')">Overdue</button>
-            </div>
         </div>
 
-        <!-- 🔹 RIGHT: TASKS GRID -->
-        <div class="tasks-card">
-            <ul id="taskList"></ul>
-        </div>
+       <div class="dashboard-grid">
 
+            <div class="control-card">
+                <h2>My Tasks</h2>
+
+                <div class="add-task">
+                    <input type="text" id="newTask" placeholder="Task title" />
+                    <input type="text" id="description" placeholder="Description">
+                    <input type="text" id="city" placeholder="City (e.g. London)" />
+                    <input type="date" id="dueDate">
+                    <button class="primary-btn" onclick="addTask()">Add Task</button>
+                </div>
+
+                <div class="filters">
+                    <button onclick="setFilter('all')">All</button>
+                    <button onclick="setFilter('active')">Active</button>
+                    <button onclick="setFilter('completed')">Completed</button>
+                    <button onclick="setFilter('overdue')">Overdue</button>
+                </div>
+            </div>
+
+            <div class="tasks-card">
+                <ul id="taskList"></ul>
+            </div>
+            <script src="app.js"></script>
+        </div>
     </div>
-
-    <script src="app.js"></script>
 </body>
 </html>

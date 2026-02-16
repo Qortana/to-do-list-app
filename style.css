@@ -1,0 +1,265 @@
+/* =========================
+   GLOBAL RESET
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+    transition: background 0.4s ease,
+                color 0.4s ease,
+                box-shadow 0.4s ease,
+                transform 0.3s ease;
+}
+
+
+:root {
+    --primary: #667eea;
+    --secondary: #764ba2;
+    --bg-main: #ffffff;
+    --bg-card: #f9fafb;
+    --text-main: #111827;
+    --shadow: rgba(0,0,0,0.15);
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+body.dark {
+    --bg-main: #1f2937;
+    --bg-card: #374151;
+    --text-main: #01050a;
+    --shadow: rgba(0,0,0,0.6);
+}
+
+body.theme-blue {
+    --primary: #91b5f0;
+    --secondary: #2563eb;
+}
+
+body.theme-green {
+    --primary: #88eecc;
+    --secondary: #059669;
+}
+
+body.theme-orange {
+    --primary: #f5a164;
+    --secondary: #ea580c;
+}
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+.todo-container{
+    width: 100%;
+    max-width: 1300px;
+    background: var(--bg-main);
+    color: var(--text-main);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    transition: 0.4s ease;
+}
+
+/* =========================
+   PROFILE HEADER
+========================= */
+.profile-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 25px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 18px;
+    color: white;
+    transition: 0.4s ease;
+}
+
+.profile-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.avatar {
+    position: relative;
+    font-size: 2.2rem;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -6px;
+    right: -12px;
+    background: #ef4444;
+    padding: 5px 8px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    color: white;
+}
+
+/* =========================
+   DASHBOARD GRID
+========================= */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 30px;
+}
+
+/* =========================
+   CONTROL PANEL
+========================= */
+.control-card {
+    background: var(--bg-card);
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: 0.4s ease;
+}
+
+.control-card h2 {
+    margin-bottom: 20px;
+}
+
+/* Inputs */
+.add-task {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.add-task input {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1.5px solid #e5e7eb;
+    background: #ffffff;
+    transition: all 0.25s ease;
+}
+
+.add-task input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   BUTTONS
+========================= */
+button {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-weight: 500;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.primary-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(16,185,129,0.4);
+}
+
+.filters {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filters button {
+    background: #e5e7eb;
+}
+
+.filters button:hover {
+    background: #667eea;
+    color: white;
+}
+
+/* =========================
+   TASKS AREA
+========================= */
+.tasks-card {
+    background: var(--bg-card);
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: 0.4s ease;
+}
+
+ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+li {
+    background: white;
+    padding: 18px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: 0.25s ease;
+}
+
+li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.task-actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.task-actions button {
+    background: #667eea;
+    color: white;
+    padding: 6px 10px;
+    font-size: 0.8rem;
+}
+
+.task-actions button:hover {
+    transform: scale(1.1);
+}
+
+/* =========================
+   STATES
+========================= */
+.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.overdue {
+    border-left: 5px solid #ef4444;
+    background: #fee2e2;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+

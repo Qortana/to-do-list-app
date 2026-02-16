@@ -3,26 +3,34 @@
 <head>
     <meta charset="UTF-8" />
     <title> Sign Up</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="0-style.css" />
 </head>
 <body>
 
-    <div class="login-card">
-        <h2>Create  Account ✨</h2>
-
-        <input type="text" id="newUsername" placeholder="Username" />
-        <input type="password" id="newPassword" placeholder="Password" />
-
-        <button onclick="signup()">Sign Up </button>
-
-        <p>
-            already have an account?
-            <a href="index.html">Login</a>
-        </p>
-
-        <p id="signupError"></p>
+    <div class="main-container">
+        <span class="bg-anirate"></span>
+        <span class="bg-2-anirate"></span>
+        <!--form section-->
+        <div class="form-box login">
+            <h2 class="animation" style="--i:0 --j:21">Login</h2>
+            <form action="0">
+                <div class="input-box animation" style="--i:1; --j:22">
+                    <input type="text" required>
+                    <label for="text">Username</label>
+                    <i class="bx bxs-user"></i>
+                </div>
+                <div class="input-box animation" style="--i:2; --j:23">
+                    <input type="password" required>
+                    <label for="password">Password</label>
+                    <i class="bx bxs-lock-alt"></i>
+                </div>
+                <button type="0" class="btn animation" style="--i:3; --j:24">Login</button>
+                <div class="reglog-text animation" style="--i:4; --j:25">
+                    <p>Dont have an Account? <a href="0" class="signup-link">Sign Up</a></p>
+                </div>
+            </form>
+        </div>
     </div>
-
     <script src="app.js"></script>
 </body>
-</html>c
+</html>
