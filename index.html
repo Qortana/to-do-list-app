@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo App | Auth</title>
+    <link rel="stylesheet" href="0-style.css">
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="container">
+    <div class="form-wrapper">
+
+        <!-- LOGIN -->
+        <div class="form-box login">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <div class="input-box">
+                    <input type="text" id="loginUsername" required>
+                    <label>Username</label>
+                </div>
+
+                <div class="input-box">
+                    <input type="password" id="loginPassword" required>
+                    <label>Password</label>
+                </div>
+
+                <button type="submit" class="btn">Login</button>
+                <p class="message"></p>
+
+                <p>
+                    Don't have an account?
+                    <span class="toggle">Sign Up</span>
+                </p>
+            </form>
+        </div>
+
+        <!-- REGISTER -->
+        <div class="form-box register">
+            <h2>Create Account</h2>
+            <form id="registerForm">
+                <div class="input-box">
+                    <input type="text" id="registerUsername" required>
+                    <label>Username</label>
+                </div>
+
+                <div class="input-box">
+                    <input type="password" id="registerPassword" required>
+                    <label>Password</label>
+                </div>
+
+                <button type="submit" class="btn">Sign Up</button>
+                <p class="message"></p>
+
+                <p>
+                    Already have an account?
+                    <span class="toggle">Login</span>
+                </p>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script src="0-app.js"></script>
+</body>
+</html>
