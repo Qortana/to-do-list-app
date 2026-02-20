@@ -10,45 +10,129 @@ function saveTasks(tasks) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-/* =========================
-   DARK MODE TOGGLE
-========================= */
+const canvas = document.getElementById("bgCanvas");
+const ctx = canvas.getContext("2d");
 
-const darkToggle = document.getElementById("darkToggle");
-const themeSelector = document.getElementById("themeSelector");
+canvas.width = canvas.offsetWidth;
+canvas.height = canvas.offsetHeight;
 
-darkToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark");
-
-    localStorage.setItem(
-        "darkMode",
-        document.body.classList.contains("dark")
-    );
+window.addEventListener("resize", () => {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
 });
 
-/* =========================
-   THEME SWITCHER
-========================= */
+// Particle setup
+const particles = [];
+const particleCount = 80;
 
-themeSelector.addEventListener("change", (e) => {
-    document.body.classList.remove(
-        "theme-blue",
-        "theme-green",
-        "theme-orange"
-    );
+for (let i = 0; i < particleCount; i++) {
+    particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 1,
+        speedX: (Math.random() - 0.5) * 0.5,
+        speedY: (Math.random() - 0.5) * 0.5,
+        alpha: Math.random() * 0.5 + 0.3
+    });
+}
 
-    if (e.target.value !== "default") {
-        document.body.classList.add(`theme-${e.target.value}`);
-    }
+/* =======================
+   BACHGROUND ANIMATION
+======================= */
+// Draw loop
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    localStorage.setItem("theme", e.target.value);
-});
+    particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+        ctx.fill();
 
-/* =========================
-   LOAD SAVED THEME
-========================= */
+        // move particle
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        // wrap around edges
+        if (p.x > canvas.width) p.x = 0;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.y > canvas.height) p.y = 0;
+        if (p.y < 0) p.y = canvas.height;
+    });
+
+    requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
+
+/* =======================
+   SMART GREETING
+======================= */
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    const username = localStorage.getItem("username") || "User";
+    const greetingEl = document.getElementById("greeting");
+
+    function getGreeting() {
+        const hour = new Date().getHours();
+        if (hour < 12) return "Good Morning";
+        if (hour < 18) return "Good Afternoon";
+        return "Good Evening";
+    }
+
+    if (greetingEl) {
+        greetingEl.textContent = `${getGreeting()}, ${username} 👋`;
+    }
+
+    loadSavedTheme();
+    bindEvents();
+    loadTasks();
+});
+
+/* =======================
+   TOAST SYSTEM
+======================= */
+
+function showToast(message, type = "success") {
+    const container = document.getElementById("toastContainer");
+    if (!container) return;
+
+    const toast = document.createElement("div");
+    toast.classList.add("toast", type);
+    toast.textContent = message;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add("hide");
+        setTimeout(() => toast.remove(), 400);
+    }, 3000);
+}
+
+
+/* =========================
+   DARK MODE 
+========================= */
+
+function bindEvents() {
+
+    const darkToggle = document.getElementById("darkToggle");
+    
+    const addBtn = document.getElementById("addTaskBtn");
+
+    if (darkToggle) {
+        darkToggle.addEventListener("click", () => {
+            document.body.classList.toggle("dark");
+            localStorage.setItem(
+                "darkMode",
+                document.body.classList.contains("dark")
+            );
+        });
+    }
+}
+    
+function loadSavedTheme() {
     const savedDark = localStorage.getItem("darkMode");
     const savedTheme = localStorage.getItem("theme");
 
@@ -58,19 +142,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (savedTheme && savedTheme !== "default") {
         document.body.classList.add(`theme-${savedTheme}`);
-        themeSelector.value = savedTheme;
+        const selector = document.getElementById("themeSelector");
+        if (selector) selector.value = savedTheme;
     }
-});
+}
+
+/* =======================
+   STATS COUNTER
+======================= */
+
+function animateCounter(element, target) {
+    let current = 0;
+    const increment = Math.ceil(target / 30);
+
+    const update = () => {
+        current += increment;
+        if (current >= target) {
+            element.textContent = target;
+        } else {
+            element.textContent = current;
+            requestAnimationFrame(update);
+        }
+    };
+
+    update();
+}
 
 
 /* =======================
-   WEATHER
+   WEATHER CONFIG
 ======================= */
 
-const WEATHER_API_KEY = "YOUR_API_KEY_HERE";
+const WEATHER_API_KEY = "5d24ee8f5b80275440edaf724a5722de";
 const WEATHER_RATE_LIMIT_MS = 10 * 60 * 1000;
 
+
+/* =======================
+   WEATHER FUNCTION
+======================= */
+
 async function getWeather(city) {
+
+    if (!WEATHER_API_KEY || WEATHER_API_KEY === "YOUR_API_KEY_HERE") {
+        return null;
+    }
+
     const key = `weather_${city.toLowerCase()}`;
     const cached = JSON.parse(localStorage.getItem(key));
 
@@ -86,31 +202,35 @@ async function getWeather(city) {
         if (!res.ok) return null;
 
         const data = await res.json();
-        localStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now() }));
+
+        localStorage.setItem(
+            key,
+            JSON.stringify({ data, timestamp: Date.now() })
+        );
+
         return data;
-    } catch {
+
+    } catch (error) {
+        console.log("Weather error:", error);
         return null;
     }
 }
 
-function getWeatherClass(type) {
-    if (!type) return "";
-    return `weather-${type.toLowerCase()}`;
-}
 
 /* =======================
-   TASKS
+   ADD TASK
 ======================= */
 
 async function addTask() {
+
     const titleInput = document.getElementById("newTask");
     const descInput = document.getElementById("description");
     const cityInput = document.getElementById("city");
     const dueDateInput = document.getElementById("dueDate");
 
-    if (!titleInput.value || !cityInput.value) return;
+    if (!titleInput?.value || !cityInput?.value) return;
 
-    const weather = await getWeather(cityInput.value);
+    let weather = await getWeather(cityInput.value);
 
     const task = {
         id: Date.now(),
@@ -123,21 +243,28 @@ async function addTask() {
         weatherText: weather
             ? `${weather.weather[0].main}, ${weather.main.temp}°C`
             : "Weather unavailable",
-        weatherType: weather?.weather[0].main || "",
-        weatherIcon: weather?.weather[0].icon || ""
+        weatherType: weather?.weather[0]?.main || "",
+        weatherIcon: weather?.weather[0]?.icon || ""
     };
 
     const tasks = getTasks();
     tasks.push(task);
     saveTasks(tasks);
+    showToast("Task added successfully!");
 
-    loadTasks();
 
     titleInput.value = "";
     descInput.value = "";
     cityInput.value = "";
     dueDateInput.value = "";
+
+    loadTasks();
 }
+
+
+/* =======================
+   TOGGLE / EDIT / DELETE
+======================= */
 
 function toggleComplete(id) {
     const tasks = getTasks();
@@ -147,6 +274,8 @@ function toggleComplete(id) {
     task.completed = !task.completed;
     saveTasks(tasks);
     loadTasks();
+    showToast("Task updated");
+
 }
 
 function editTask(id) {
@@ -168,7 +297,10 @@ function deleteTask(id) {
     const tasks = getTasks().filter(t => t.id !== id);
     saveTasks(tasks);
     loadTasks();
+    showToast("Task deleted", "error");
+
 }
+
 
 /* =======================
    FILTER
@@ -181,11 +313,13 @@ function setFilter(filter) {
     loadTasks();
 }
 
+
 /* =======================
    RENDER
 ======================= */
 
 function renderTask(task) {
+
     const li = document.createElement("li");
 
     if (task.completed) li.classList.add("completed");
@@ -197,8 +331,6 @@ function renderTask(task) {
         }
     }
 
-    li.classList.add(getWeatherClass(task.weatherType));
-
     const icon = task.weatherIcon
         ? `<img src="https://openweathermap.org/img/wn/${task.weatherIcon}@2x.png">`
         : "";
@@ -207,7 +339,7 @@ function renderTask(task) {
         <strong>${task.title}</strong>
         <p>${task.description}</p>
         <small>📍 ${task.city} ${icon} ${task.weatherText}</small><br>
-        <small>🕒 ${new Date(task.createdAt).toLocaleString()}</small>
+        <small>🕒 ${new Date(task.createdAt).toLocaleString()}</small><br>
         <small>📅 Due: ${task.dueDate || "Not set"}</small>
 
         <div class="task-actions">
@@ -220,13 +352,18 @@ function renderTask(task) {
     return li;
 }
 
+
 function loadTasks() {
+
     const list = document.getElementById("taskList");
+    if (!list) return;
+
     list.innerHTML = "";
 
     const tasks = getTasks();
 
     const filtered = tasks.filter(task => {
+
         if (currentFilter === "active") return !task.completed;
         if (currentFilter === "completed") return task.completed;
         if (currentFilter === "overdue") {
@@ -238,12 +375,28 @@ function loadTasks() {
 
     filtered.forEach(task => list.appendChild(renderTask(task)));
 
-    document.getElementById("notifCount").innerText =
-        tasks.filter(t => !t.completed).length;
+    const totalCount = document.getElementById("taskCount");
+    if (totalCount) {
+        totalCount.innerText = tasks.length;
+    }
+
+    const notif = document.getElementById("notifCount");
+    if (notif) {
+        notif.innerText = tasks.filter(t => !t.completed).length;
+    }
+    // Update stats counters
+    const totalCountEl = document.getElementById("totalCount");
+    const activeCountEl = document.getElementById("activeCount");
+    const completedCountEl = document.getElementById("completedCount");
+
+    const total = tasks.length;
+    const active = tasks.filter(t => !t.completed).length;
+    const completed = tasks.filter(t => t.completed).length;
+
+    if (totalCountEl) animateCounter(totalCountEl, total);
+    if (activeCountEl) animateCounter(activeCountEl, active);
+    if (completedCountEl) animateCounter(completedCountEl, completed);
 }
 
-/* =======================
-   INIT
-======================= */
 
-document.addEventListener("DOMContentLoaded", loadTasks);
+
