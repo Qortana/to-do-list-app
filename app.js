@@ -173,7 +173,7 @@ function animateCounter(element, target) {
    WEATHER CONFIG
 ======================= */
 
-const WEATHER_API_KEY = process.env.OPENWEATHER_API_KEY;
+const WEATHER_API_KEY = "4082f110a3d84eca8fd3b5ee78b3e992";
 const WEATHER_RATE_LIMIT_MS = 10 * 60 * 1000;
 
 
